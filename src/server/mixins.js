@@ -1,10 +1,10 @@
-const nanoid = require('nanoid')
+const { nanoid } = require('nanoid')
 const pluralize = require('pluralize')
 
 module.exports = {
   getRemovable,
   createId,
-  deepQuery
+  deepQuery,
 }
 
 // Returns document ids that have unsatisfied relations
@@ -13,8 +13,13 @@ function getRemovable(db, opts) {
   const _ = this
   const removable = []
   _.each(db, (coll, collName) => {
-    _.each(coll, doc => {
+    _.each(coll, (doc) => {
       _.each(doc, (value, key) => {
+        if (value === null || value === undefined) {
+          if (opts.includeOrphans ?? true)
+            removable.push({ name: collName, id: doc.id })
+          return
+        }
         if (new RegExp(`${opts.foreignKeySuffix}$`).test(key)) {
           // Remove foreign key suffix and pluralize it
           // Example postId -> posts
@@ -62,17 +67,12 @@ function deepQuery(value, q) {
         }
       }
     } else if (_.isObject(value) && !_.isArray(value)) {
-      for (let k in value) {
+      for (const k in value) {
         if (_.deepQuery(value[k], q)) {
           return true
         }
       }
-    } else if (
-      value
-        .toString()
-        .toLowerCase()
-        .indexOf(q) !== -1
-    ) {
+    } else if (value.toString().toLowerCase().indexOf(q) !== -1) {
       return true
     }
   }

@@ -11,12 +11,15 @@ describe('Server with custom foreign key', () => {
   beforeEach(() => {
     db = {}
 
-    db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
+    db.posts = [
+      { id: 1, body: 'foo' },
+      { id: 2, body: 'bar' },
+    ]
 
     db.comments = [
       { id: 1, post_id: 1 },
       { id: 2, post_id: 1 },
-      { id: 3, post_id: 2 }
+      { id: 3, post_id: 2 },
     ]
 
     server = jsonServer.create()
@@ -30,8 +33,7 @@ describe('Server with custom foreign key', () => {
       request(server)
         .get('/posts/1/comments')
         .expect('Content-Type', /json/)
-        .expect([db.comments[0], db.comments[1]])
-        .expect(200))
+        .expect(200, [db.comments[0], db.comments[1]]))
   })
 
   describe('GET /:resource/:id', () => {
@@ -39,8 +41,7 @@ describe('Server with custom foreign key', () => {
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
-        .expect(db.posts[0])
-        .expect(200))
+        .expect(200, db.posts[0]))
   })
 
   describe('GET /:resource?_embed=', () => {
@@ -51,8 +52,7 @@ describe('Server with custom foreign key', () => {
       return request(server)
         .get('/posts?_embed=comments')
         .expect('Content-Type', /json/)
-        .expect(posts)
-        .expect(200)
+        .expect(200, posts)
     })
   })
 
@@ -63,8 +63,7 @@ describe('Server with custom foreign key', () => {
       return request(server)
         .get('/posts/1?_embed=comments')
         .expect('Content-Type', /json/)
-        .expect(post)
-        .expect(200)
+        .expect(200, post)
     })
   })
 
@@ -77,8 +76,7 @@ describe('Server with custom foreign key', () => {
       return request(server)
         .get('/comments?_expand=post')
         .expect('Content-Type', /json/)
-        .expect(comments)
-        .expect(200)
+        .expect(200, comments)
     })
   })
 
@@ -89,8 +87,7 @@ describe('Server with custom foreign key', () => {
       return request(server)
         .get('/comments/1?_expand=post')
         .expect('Content-Type', /json/)
-        .expect(comment)
-        .expect(200)
+        .expect(200, comment)
     })
   })
 
@@ -100,16 +97,12 @@ describe('Server with custom foreign key', () => {
         .post('/posts/1/comments')
         .send({ body: 'foo' })
         .expect('Content-Type', /json/)
-        .expect({ id: 4, post_id: '1', body: 'foo' })
-        .expect(201))
+        .expect(201, { id: 4, post_id: '1', body: 'foo' }))
   })
 
   describe('DELETE /:resource/:id', () => {
     test('should respond with empty data, destroy resource and dependent resources', async () => {
-      await request(server)
-        .del('/posts/1')
-        .expect({})
-        .expect(200)
+      await request(server).del('/posts/1').expect({}).expect(200)
       assert.strictEqual(db.posts.length, 1)
       assert.strictEqual(db.comments.length, 1)
     })

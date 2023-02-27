@@ -1,4 +1,4 @@
-# JSON Server [![](https://travis-ci.org/typicode/json-server.svg?branch=master)](https://travis-ci.org/typicode/json-server) [![](https://badge.fury.io/js/json-server.svg)](http://badge.fury.io/js/json-server)
+# JSON Server [![Node.js CI](https://github.com/typicode/json-server/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/typicode/json-server/actions/workflows/node.js.yml)
 
 Get a full fake REST API with __zero coding__ in __less than 30 seconds__ (seriously)
 
@@ -10,35 +10,68 @@ Created with <3 for front-end developers who need a quick back-end for prototypi
 
 See also:
 * :dog: [husky - Git hooks made easy](https://github.com/typicode/husky)
-* :hotel: [hotel - developer tool with local .localhost domain and https out of the box](https://github.com/typicode/hotel)
+* :owl: [lowdb - local JSON database](https://github.com/typicode/lowdb)
+* ✅ [xv - a beautifully simple and capable test runner](https://github.com/typicode/xv)
 
-<a href="https://www.patreon.com/typicode">
-  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
+<p>&nbsp;</p>
 
-<h2 align="center">Sponsors</h2>
+<h2 align="center">Gold sponsors 🥇</h2>
 
-<h3 align="center">Gold</h3>
+<p>&nbsp;</p>
 
 <p align="center">
   <a href="https://tryretool.com/?utm_source=sponsor&utm_campaign=typicode" target="_blank">
-    <img src="https://i.imgur.com/IBItATn.png" height="60px">
-  </a>
-</p>
-
-<h3 align="center">Bronze</h3>
-
-<p align="center">
-  <a href="https://www.zinggrid.com/?utm_source=jsonserver&utm_medium=github&utm_campaign=sponsorship" target="_blank">
-    <img src="https://i.imgur.com/3mJGTAQ.png" height="30px">
+    <img src="https://i.imgur.com/IBItATn.png" height="70px">
   </a>
 </p>
 
 <p>&nbsp;</p>
 
 <p align="center">
-  <a href="https://patreon.com/typicode">Become a sponsor and have your company logo here</a>
+  <a href="https://mockend.com/" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/mockend.svg" height="70px">
+  </a>
 </p>
+
+<p>&nbsp;</p>
+
+<p align="center">
+  <a href="https://megafamous.com/buy-instagram-followers" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/megafamous.png" height="70px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
+<p align="center">
+  <a href="http://asocks.com/c/TFw5bz" target="_blank">
+    <img src="https://jsonplaceholder.typicode.com/asocks.png" height="70px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<h2 align="center">Silver sponsors 🥈</h2>
+
+<p>&nbsp;</p>
+
+<p align="center">
+  <a href="https://cased.com" target="_blank">
+    <img src="https://user-images.githubusercontent.com/5502029/194441951-b7dca49d-efd6-496d-900b-288004717f11.png" height="55px">
+  </a>
+</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+[Become a sponsor and have your company logo here](https://github.com/users/typicode/sponsorship)
+
+## Sponsor
+
+__Please help me build OSS__ 👉 [GitHub Sponsors](https://github.com/sponsors/typicode) :heart:
 
 ## Table of contents
 
@@ -54,7 +87,6 @@ See also:
   * [Slice](#slice)
   * [Operators](#operators)
   * [Full-text search](#full-text-search)
-  * [Map results](#map-results)
   * [Relationships](#relationships)
   * [Database](#database)
   * [Homepage](#homepage)
@@ -90,7 +122,7 @@ See also:
 Install JSON Server 
 
 ```
-npm install -g @nmyvision/json-server
+npm install -g json-server
 ```
 
 Create a `db.json` file with some data
@@ -124,7 +156,7 @@ Also when doing requests, it's good to know that:
 - If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
 - Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
 - Id values are not mutable. Any `id` value in the body of your PUT or PATCH request will be ignored. Only a value set in a POST request will be respected, but only if not already taken.
-- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will result in a 200 OK but without changes being made to the data.
+- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data. 
 
 ## Routes
 
@@ -215,15 +247,10 @@ Add `_ne` to exclude a value
 GET /posts?id_ne=1
 ```
 
-Add `_like` to filter (RegExp supported) also supports arrays
+Add `_like` to filter (RegExp supported)
 
 ```
 GET /posts?title_like=server
-```
-
-Add `_contains` to search arrays (this is CaseSensitive)
-```
-GET /posts?tags_contains=server
 ```
 
 ### Full-text search
@@ -232,25 +259,6 @@ Add `q`
 
 ```
 GET /posts?q=internet
-```
-
-Add `q` with `prop` to limit the search fields
-
-```
-GET /posts?q=internet&prop=title
-```
-or expand to multiple fields
-
-```
-GET /posts?q=internet&prop=title&prop=second_field
-```
-
-### Map results
-
-Add `_keys` to limit the results
-
-```
-GET /buyers?_keys=id,name
 ```
 
 ### Relationships
@@ -348,7 +356,7 @@ module.exports = () => {
 $ json-server index.js
 ```
 
-__Tip__ use modules like [Faker](https://github.com/Marak/faker.js), [Casual](https://github.com/boo1ean/casual), [Chance](https://github.com/victorquinn/chancejs) or [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker).
+__Tip__ use modules like [Faker](https://github.com/faker-js/faker), [Casual](https://github.com/boo1ean/casual), [Chance](https://github.com/victorquinn/chancejs) or [JSON Schema Faker](https://github.com/json-schema-faker/json-schema-faker).
 
 ### HTTPS
 
@@ -478,6 +486,8 @@ const router = jsonServer.router(path.join(__dirname, 'db.json'))
 
 For an in-memory database, simply pass an object to `jsonServer.router()`.
 
+To add custom options (eg. `foreginKeySuffix`) pass in an object as the second argument to `jsonServer.router('db.json', { foreginKeySuffix: '_id' })`.
+
 Please note also that `jsonServer.router()` can be used in existing Express projects.
 
 #### Custom routes example
@@ -599,9 +609,11 @@ Returns middlewares used by JSON Server.
   * `noCors` disable CORS (default: false)
   * `readOnly` accept only GET requests (default: false)
 
-__`jsonServer.router([path|object])`__
+__`jsonServer.router([path|object], [options])`__
 
 Returns JSON Server router.
+
+* options (see [CLI usage](#cli-usage))
 
 ### Deployment
 
@@ -616,7 +628,6 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 ### Articles
 
 * [Node Module Of The Week - json-server](http://nmotw.in/json-server/)
-* [Mock up your REST API with JSON Server](http://www.betterpixels.co.uk/projects/2015/05/09/mock-up-your-rest-api-with-json-server/)
 * [ng-admin: Add an AngularJS admin GUI to any RESTful API](http://marmelab.com/blog/2014/09/15/easy-backend-for-your-restful-api.html)
 * [Fast prototyping using Restangular and Json-server](https://glebbahmutov.com/blog/fast-prototyping-restangular-and-json-server/)
 * [Create a Mock REST API in Seconds for Prototyping your Frontend](https://coligo.io/create-mock-rest-api-with-json-server/)
@@ -635,4 +646,4 @@ You can deploy JSON Server. For example, [JSONPlaceholder](http://jsonplaceholde
 
 MIT
 
-[Patreon](https://www.patreon.com/typicode) - [Supporters](https://thanks.typicode.com) ✨
+[Supporters](https://thanks.typicode.com) ✨

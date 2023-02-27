@@ -40,6 +40,7 @@ module.exports = (db, name, opts) => {
       if (req.method === 'PUT') {
         db.set(name, req.body).value()
       } else {
+        // db.get(name).assign(req.body).value()
         const resource = db.get(name).value()
         db.set(name, deepmerge(resource, req.body)).value()
       }
@@ -52,12 +53,7 @@ module.exports = (db, name, opts) => {
 
   const w = write(db)
 
-  router
-    .route('/')
-    .get(show)
-    .post(create, w)
-    .put(update, w)
-    .patch(update, w)
+  router.route('/').get(show).post(create, w).put(update, w).patch(update, w)
 
   return router
 }
